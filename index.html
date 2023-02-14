@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>memo application</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+
+<body>
+    <header>Memo</header>
+    <div id="app">
+        <div class="addMemo mb-20">
+            <textarea v-model="inputtedMemo" id="typeForm" class="inputMemo mb-20"
+                placeholder="こちらにメモを入力してください.."></textarea>
+            <button @click="pushSaveButton">保存</button>
+        </div>
+        <div class="repository">
+            <p>保存済みのメモ</p>
+            <ul>
+                <li v-for="(memoList, index) in memoLists" @click="openDetail(index)">{{memoList}}</li>
+            </ul>
+        </div>
+        <div class="modalWindow">
+            <div class="modalMain">
+                <span @click="closeDetail">&times;</span>
+                <p>{{ openDetailData }}</p>
+                <button @click="pushDeleteButton(saveIndex)">メモの削除</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                memoLists: [],
+                openDetailData: "",
+                saveIndex: ""
+            },
+            methods: {
+                pushSaveButton: function () {
+                    this.memoLists.push(this.inputtedMemo)
+                    this.inputtedMemo = ""
+                    document.getElementById('typeForm').focus()
+                },
+                pushDeleteButton: function (index) {
+                    this.memoLists.splice(index, 1)
+                    document.querySelector(".modalWindow").style.
+                    display = "none";
+                },
+                openDetail: function (index) {
+                    this.openDetailData = this.memoLists[index]
+                    this.saveIndex = index
+                    document.querySelector(".modalWindow").style.
+                    display = "block";
+                },
+                closeDetail: function (){
+                    document.querySelector(".modalWindow").style.
+                    display = "none";
+                }
+            },
+            mounted: function () {
+                document.getElementById('typeForm').focus()
+            }
+        })
+    </script>
+</body>
+
+</html>
